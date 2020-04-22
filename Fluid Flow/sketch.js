@@ -1,32 +1,50 @@
-let slider;
+let aSlider, magniSlider, mSlider;
 
 function setup() {
-  createCanvas(windowWidth * 0.95, windowHeight * 0.95);
+  createCanvas(250, 250);
   frameRate(60);
+  magniSlider = createSlider(1, 10000);
+  mSlider = createSlider(1, 10000);
+  noiseDetail(2);
 }
 
+particles = [];
 let zNoiseAngle = 0;
+let xAngleOffset = 0.5;
+let xAngle = 0;
 let zNoiseMagnitude = 100;
-let cellWidth = 25; // Total amount of cells horizontally and vertically
-let cellHeight = Math.floor(cellWidth * (screen.height / screen.width));
-let magShift = 0.35;
-let angShift = 0.2;
+let zOffMag = 0.001;
+let zOffAng = 0.01;
+let magniVal = 1;
+let magShift = 1;
+// let magShift = 1;
+// let zOffAng = 1;
+// let magniVal = 1;
+
 
 function draw() {
-  background(255);
-  let zOffAng = 0.00015;
-  let zOffMag = 0.00025;
-  for (x = 0; x < cellWidth; x++) {
-    for (y = 0; y < cellHeight; y++) {
-      stroke((1 - noise(x * magShift, y * magShift, zNoiseMagnitude)) * 255, 0, noise(x * magShift, y * magShift, zNoiseMagnitude) * 255);
-      strokeWeight(1);
-      noFill();
-      let theta = noise(x * angShift, y * angShift, zNoiseAngle) * TWO_PI;
-      line(x * (width / cellWidth) + (width / cellWidth) / 2, y * (height / cellHeight) + (height / cellHeight) / 2, x * (width / cellWidth) + (width / cellWidth) / 2 + (width * cos(theta)) / (2 * cellWidth), y * (height / cellHeight) + (height / cellHeight) / 2 + (height * sin(theta)) / (2 * cellHeight));
+  background(0);
+  particles.push(new Particle(random() * PI));
+
+  for (let i = 0; i < particles.length; i++) {
+    if (particles[i].posCheck()) {
+      particles.splice(i, 1);
+      zNoiseAngle += zOffAng;
+      zNoiseMagnitude += zOffMag;
     }
-    zNoiseAngle += zOffAng;
-    zNoiseMagnitude += zOffMag;
+
+    else {
+      particles[i].accelerate(magniVal, zNoiseAngle, magShift, zNoiseMagnitude);
+      particles[i].move();
+      particles[i].show();
+    }
   }
-  // console.log(frameRate())
-  // noLoop();
+
+  if (mouseIsPressed) {
+    particles.push(new Particle());
+  }
+}
+
+function windowResized() {
+  resizeCanvas(250, 250);
 }
