@@ -1,22 +1,24 @@
-let aSlider, magniSlider, mSlider;
+let maxSlider, creationSlider, trailBox;
 
 function setup() {
-  createCanvas(250, 250);
+  createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  magniSlider = createSlider(1, 10000);
-  mSlider = createSlider(1, 10000);
   noiseDetail(2);
+  maxSlider = createSlider(10, 5000, 100);
+  creationSlider = createSlider(1, 50, 5);
 }
 
-particles = [];
+let particles = [];
 let zNoiseAngle = 0;
-let xAngleOffset = 0.5;
 let xAngle = 0;
+let xAngleOffset = 0.0005;
 let zNoiseMagnitude = 100;
-let zOffMag = 0.001;
-let zOffAng = 0.01;
+let zOffMag = 0.1;
+let zOffAng = 0.1;
 let magniVal = 1;
 let magShift = 1;
+let noiseFix = 0;
+let noiseFixOffset = 0.01;
 // let magShift = 1;
 // let zOffAng = 1;
 // let magniVal = 1;
@@ -24,8 +26,13 @@ let magShift = 1;
 
 function draw() {
   background(0);
-  particles.push(new Particle(random() * PI));
-
+  if (particles.length < maxSlider.value()) {
+    for (let i = 0; i < creationSlider.value(); i++) {
+      particles.push(new Particle(random() * TWO_PI * 1.5, noise(noiseFix) * 15));
+      xAngle += xAngleOffset;
+      noiseFix += noiseFixOffset;
+    }
+  }
   for (let i = 0; i < particles.length; i++) {
     if (particles[i].posCheck()) {
       particles.splice(i, 1);
@@ -39,12 +46,9 @@ function draw() {
       particles[i].show();
     }
   }
-
-  if (mouseIsPressed) {
-    particles.push(new Particle());
-  }
+  console.log(frameRate())
 }
 
 function windowResized() {
-  resizeCanvas(250, 250);
+  resizeCanvas(windowWidth, windowHeight);
 }
