@@ -6,6 +6,7 @@ function setup() {
   noiseDetail(2);
   maxSlider = createSlider(10, 5000, 100);
   creationSlider = createSlider(1, 50, 5);
+  trailBox = createCheckbox('Trails on?');
 }
 
 let particles = [];
@@ -51,4 +52,12 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function myCheckedEvent() {
+  if (trailBox.checked()) {
+    console.log('Checking!');
+  } else {
+    console.log('Unchecking!');
+  }
 }
