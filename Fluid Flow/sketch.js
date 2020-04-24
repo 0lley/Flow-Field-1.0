@@ -5,11 +5,9 @@ function setup() {
   background(0);
   frameRate(60);
   noiseDetail(2);
-  maxSlider = createSlider(10, 2500, 750);
-  accelerationSlider = createSlider(10, 200, 50);
+  maxSlider = createSlider(10, 2500, 1500);
+  accelerationSlider = createSlider(10, 200, 80);
   particleSize = createSlider(1, 10, 4);
-  let trailBox = createCheckbox('Trails on?', false);
-  trailBox.changed(checkBoxTrue);
 }
 
 let particles = [];
@@ -22,22 +20,13 @@ let zOffAng = 0.1;
 let magniVal = 1;
 let magShift = 1;
 let noiseFix = 0;
-let noiseFixOffset = 0.0025;
-let trailParticle;
-
-function checkBoxTrue() {
-  if (this.checked()) {
-    trailParticle = true;
-  } else {
-    trailParticle = false;
-  }
-}
+let noiseFixOffset = 0.00025;
 
 function draw() {
   background(0);
   if (mouseIsPressed) {
     if (particles.length < maxSlider.value()) {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 3; i++) {
         particles.push(new Particle());
       }
     }
@@ -50,8 +39,8 @@ function draw() {
 
     else {
       particles[i].accelerate(magniVal, zNoiseAngle, zNoiseMagnitude);
-      particles[i].move();
       particles[i].show();
+      particles[i].move();
     }
   }
   xAngle += xAngleOffset;
