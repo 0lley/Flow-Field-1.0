@@ -2,13 +2,13 @@ let maxSlider, creationSlider, accelerationSlider, particleSize;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  background(0);
   frameRate(60);
   noiseDetail(2);
-  maxSlider = createSlider(10, 5000);
-  creationSlider = createSlider(1, 50, 1);
-  accelerationSlider = createSlider(10, 200, 1);
-  particleSize = createSlider(1, 10, 3);
-  let trailBox = createCheckbox('Trail on?', false);
+  maxSlider = createSlider(10, 2500, 1000);
+  accelerationSlider = createSlider(10, 200, 50);
+  particleSize = createSlider(1, 10, 5);
+  let trailBox = createCheckbox('Trails on?', false);
   trailBox.changed(checkBoxTrue);
 }
 
@@ -22,7 +22,7 @@ let zOffAng = 0.1;
 let magniVal = 1;
 let magShift = 1;
 let noiseFix = 0;
-let noiseFixOffset = 0.01;
+let noiseFixOffset = 0.0025;
 let trailParticle;
 
 function checkBoxTrue() {
@@ -37,27 +37,25 @@ function draw() {
   background(0);
   if (mouseIsPressed) {
     if (particles.length < maxSlider.value()) {
-      for (let i = 0; i < creationSlider.value(); i++) {
-        particles.push(new Particle(random() * TWO_PI * 1.5, noise(noiseFix) * 15));
-        xAngle += xAngleOffset;
-        noiseFix += noiseFixOffset;
-        }
-      }
+      particles.push(new Particle());
     }
+  }
 
   for (let i = 0; i < particles.length; i++) {
     if (particles[i].posCheck()) {
       particles.splice(i, 1);
-      zNoiseAngle += zOffAng;
-      zNoiseMagnitude += zOffMag;
     }
 
     else {
-      particles[i].accelerate(magniVal, zNoiseAngle, magShift, zNoiseMagnitude);
+      particles[i].accelerate(magniVal, zNoiseAngle, zNoiseMagnitude);
       particles[i].move();
       particles[i].show();
     }
   }
+  xAngle += xAngleOffset;
+  noiseFix += noiseFixOffset;
+  zNoiseAngle += zOffAng;
+  zNoiseMagnitude += zOffMag;
 }
 
 function windowResized() {
