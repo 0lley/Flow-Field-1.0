@@ -5,9 +5,9 @@ function setup() {
   background(0);
   frameRate(60);
   noiseDetail(2);
-  maxSlider = createSlider(10, 2500, 1000);
+  maxSlider = createSlider(10, 2500, 750);
   accelerationSlider = createSlider(10, 200, 50);
-  particleSize = createSlider(1, 10, 5);
+  particleSize = createSlider(1, 10, 4);
   let trailBox = createCheckbox('Trails on?', false);
   trailBox.changed(checkBoxTrue);
 }
@@ -37,7 +37,9 @@ function draw() {
   background(0);
   if (mouseIsPressed) {
     if (particles.length < maxSlider.value()) {
-      particles.push(new Particle());
+      for (let i = 0; i < 5; i++) {
+        particles.push(new Particle());
+      }
     }
   }
 
