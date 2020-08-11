@@ -23,7 +23,7 @@ let noiseFix = 0;
 let noiseFixOffset = 0.00025;
 
 function draw() {
-  background(0);
+  background(0, 75);
   if (mouseIsPressed) {
     if (particles.length < maxSlider.value()) {
       for (let i = 0; i < 3; i++) {
