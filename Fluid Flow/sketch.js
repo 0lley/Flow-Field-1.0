@@ -7,7 +7,7 @@ function setup() {
   noiseDetail(2);
   maxSlider = createSlider(10, 2500, 1500);
   accelerationSlider = createSlider(10, 200, 80);
-  particleSize = createSlider(1, 10, 4);
+  particleSize = createSlider(1, 10, 5);
 }
 
 let particles = [];
@@ -51,4 +51,5 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  background(0, 75);
 }
